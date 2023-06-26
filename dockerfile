@@ -8,14 +8,14 @@ RUN npm install
 
 COPY ./ ./
 
-CMD ["npm", "run", "start"]
+RUN npm run build
 
 FROM nginx as production-stage 
 
 RUN mkdir /app 
 
-COPY --from=build-stage /dist /app/dist
+COPY --from=build-stage /app/dist /app/dist
 
 COPY nginx.conf /etc/nginx/nginx.conf 
 
-RUN service nginx restart 
+CMD ["nginx", "-g", "daemon off;"]
